@@ -1,0 +1,99 @@
+{% extends "main_allauth.html" %}
+
+{% load i18n %}
+{% load allauth account %}
+
+{% block title %}Login - SB Admin{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <div class="card shadow-lg border-0 rounded-lg mt-5">
+            <div class="card-header">
+                <h3 class="text-center font-weight-light my-4">{% trans "Sign In" %}</h3>
+            </div>
+            <div class="card-body">
+                {% if not SOCIALACCOUNT_ONLY %}
+                    {% setvar link %}
+                        <a href="{{ signup_url }}">
+                    {% endsetvar %}
+                    {% setvar end_link %}
+                        </a>
+                    {% endsetvar %}
+
+                    {% url 'account_login' as login_url %}
+                    <form method="post" action="{{ login_url }}" novalidate>
+                        {% csrf_token %}
+                        <div class="form-floating mb-3">
+                            <input class="form-control {% if form.login.errors %}is-invalid{% endif %}" id="id_login" type="text" name="login" placeholder="{% trans "Enter your username or email" %}" value="{{ form.login.value|default_if_none:'' }}" />
+                            <label for="id_login">{% trans "Email" %}</label>
+                            {% if form.login.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.login.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input class="form-control {% if form.password.errors %}is-invalid{% endif %}" id="id_password" type="password" name="password" placeholder="{% trans 'Password' %}" />
+                            <label for="id_password">{% trans "Password" %}</label>
+                            {% if form.password.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.password.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {% if form.non_field_errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.non_field_errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <a class="small" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+                            </div>
+                        </div>
+                        <div class="mt-4 mb-0">
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-success btn-lg mt-3 get-started-btn-success">{% trans "Login" %}</button>
+                                <a href="{% url 'start' %}" class="btn btn-primary btn-lg mt-3 get-started-btn">{% trans "Go to start" %}</a>
+                            </div>
+                        </div>
+                    </form>
+                {% endif %}
+                {% if LOGIN_BY_CODE_ENABLED or PASSKEY_LOGIN_ENABLED %}
+                    <hr>
+                    <div class="d-grid">
+                        {% if PASSKEY_LOGIN_ENABLED %}
+                            <button type="submit" form="mfa_login" id="passkey_login" class="btn btn-outline-primary btn-lg mt-3">{% trans "Sign in with a passkey" %}</button>
+                        {% endif %}
+                        {% if LOGIN_BY_CODE_ENABLED %}
+                            <a href="{{ request_login_code_url }}" class="btn btn-outline-primary btn-lg mt-3">{% trans "Mail me a sign-in code" %}</a>
+                        {% endif %}
+                    </div>
+                {% endif %}
+                {% if SOCIALACCOUNT_ENABLED %}
+                    {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
+                {% endif %}
+            </div>
+            <div class="card-footer text-center py-3">
+                <div class="small">
+                    <a href="{% url 'account_signup' %}">{% trans "Don't have an account? Sign up" %}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block extra_body %}
+    {{ block.super }}
+    {% if PASSKEY_LOGIN_ENABLED %}
+        {% include "mfa/webauthn/snippets/login_script.html" with button_id="passkey_login" %}
+    {% endif %}
+{% endblock extra_body %}

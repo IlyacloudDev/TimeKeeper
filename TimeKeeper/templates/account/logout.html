@@ -1,0 +1,69 @@
+{% extends "main_allauth.html" %}
+{% load allauth i18n %}
+
+{% block title %}Sign Out - SB Admin{% endblock %}
+
+{% block extra_styles %}
+<style>
+    .card {
+        width: 100%;
+        max-width: 600px;
+    }
+    .btn-danger {
+        font-size: 1.25rem;
+        padding: 0.75rem 1.5rem;
+    }
+    .get-started-btn-danger {
+        position: relative;
+        overflow: hidden;
+    }
+    .get-started-btn-danger::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -75%;
+        width: 50%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.2);
+        transform: skewX(-25deg);
+        z-index: 0;
+    }
+    .get-started-btn-danger:hover::before {
+        left: 150%;
+        transition: all 1s ease;
+    }
+    .get-started-btn-danger span {
+        position: relative;
+        z-index: 1;
+    }
+</style>
+{% endblock extra_styles %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <div class="card shadow-lg border-0 rounded-lg mt-5">
+            <div class="card-header">
+                <h3 class="text-center font-weight-light my-4">{% trans "Sign Out" %}</h3>
+            </div>
+            <div class="card-body">
+                {% url 'account_logout' as action_url %}
+                <form method="post" action="{{ action_url }}">
+                    {% csrf_token %}
+                    {{ redirect_field }}
+                    <div class="d-grid mt-4 mb-0">
+                        <button type="submit" class="btn btn-danger btn-lg get-started-btn-danger">
+                            <span>{% trans 'Sign Out' %}</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer text-center py-3">
+                <div class="small">
+                    <a href="{% url 'test' %}">{% trans "Are you sure you want to sign out? You can return to profile" %}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
