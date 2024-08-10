@@ -45,28 +45,58 @@
                                 </div>
                             {% endif %}
                         </div>
+
+                        <!-- Поле выбора гендера -->
                         <div class="form-floating mb-3">
-                            <input class="form-control {% if form.password1.errors %}is-invalid{% endif %}" id="id_password1" type="password" name="password1" placeholder="{% trans "Password" %}" />
-                            <label for="id_password1">{% trans "Password" %}</label>
-                            {% if form.password1.errors %}
+                            <select class="form-select {% if form.gender.errors %}is-invalid{% endif %}" id="id_gender" name="gender" required>
+                                <option value="">{% trans "Select Gender" %}</option>
+                                {% for value, display in form.fields.gender.choices %}
+                                    <option value="{{ value }}"{% if form.gender.value == value %} selected{% endif %}>
+                                        {{ display }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            <label for="id_gender">{% trans "Gender" %}</label>
+                            {% if form.gender.errors %}
                                 <div class="invalid-feedback">
-                                    {% for error in form.password1.errors %}
+                                    {% for error in form.gender.errors %}
                                         {{ error }}
                                     {% endfor %}
                                 </div>
                             {% endif %}
                         </div>
-                        <div class="form-floating mb-3">
-                            <input class="form-control {% if form.password2.errors %}is-invalid{% endif %}" id="id_password2" type="password" name="password2" placeholder="{% trans "Confirm Password" %}" />
-                            <label for="id_password2">{% trans "Password (again)" %}</label>
-                            {% if form.password2.errors %}
-                                <div class="invalid-feedback">
-                                    {% for error in form.password2.errors %}
-                                        {{ error }}
-                                    {% endfor %}
+
+
+                        <!-- Пароль и подтверждение пароля на одной линии -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input class="form-control {% if form.password1.errors %}is-invalid{% endif %}" id="id_password1" type="password" name="password1" placeholder="{% trans "Password" %}" />
+                                    <label for="id_password1">{% trans "Password" %}</label>
+                                    {% if form.password1.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.password1.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
                                 </div>
-                            {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input class="form-control {% if form.password2.errors %}is-invalid{% endif %}" id="id_password2" type="password" name="password2" placeholder="{% trans "Confirm Password" %}" />
+                                    <label for="id_password2">{% trans "Confirm Password" %}</label>
+                                    {% if form.password2.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.password2.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
                         </div>
+
                         {{ redirect_field }}
                         <div class="mt-4 mb-0">
                             <div class="d-grid">
