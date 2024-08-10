@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans "Profile Update" %}{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-4">
+    <h2 class="mt-4">{% trans "Profile Update" %}</h2>
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data" novalidate>
+                        {% csrf_token %}
+
+                        <!-- Поля для имени пользователя и выбора гендера на одной линии -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input class="form-control {% if form.username.errors %}is-invalid{% endif %}"
+                                           id="id_username"
+                                           type="text"
+                                           name="username"
+                                           placeholder="{% trans 'Username' %}"
+                                           value="{{ form.username.value|default_if_none:'' }}" />
+                                    <label for="id_username">{% trans "Username" %}</label>
+                                    {% if form.username.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.username.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <select class="form-select {% if form.gender.errors %}is-invalid{% endif %}"
+                                            id="id_gender"
+                                            name="gender"
+                                            required>
+                                        <option value="">{% trans "Select Gender" %}</option>
+                                        {% for value, display in form.fields.gender.choices %}
+                                            <option value="{{ value }}" {% if form.gender.value == value %} selected{% endif %}>
+                                                {{ display }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                    <label for="id_gender">{% trans "Gender" %}</label>
+                                    {% if form.gender.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.gender.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Поле загрузки аватара с текущим аватаром -->
+                        <div class="mb-3">
+                            <label for="id_avatar" class="form-label">Avatar</label>
+                            <div class="custom-file-upload d-flex align-items-center">
+                                <!-- Отображение текущего аватара -->
+                                <img id="avatar-preview" src="{{ request.user.avatar.url }}" alt="Current Avatar" class="rounded-circle me-3" style="width: 80px; height: 80px;">
+
+                                <!-- Кастомизированное поле для выбора файла -->
+                                <label class="btn btn-primary get-started-btn">
+                                    Choose File
+                                    <input type="file" id="id_avatar" name="avatar" style="display: none;">
+                                </label>
+                            </div>
+                            {% if form.avatar.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.avatar.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-success btn-lg mt-3 get-started-btn-success">{% trans "Update Profile" %}</button>
+                            <a href="{% url 'test' %}" class="btn btn-secondary mt-3 btn-lg get-started-btn">{% trans "Cancel" %}</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const fileInput = document.getElementById('id_avatar');
+        const preview = document.getElementById('avatar-preview');
+
+        fileInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    });
+</script>
+{% endblock %}
+
