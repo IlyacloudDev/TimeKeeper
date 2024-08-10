@@ -11241,3 +11241,87 @@ body {
   font-size: 0.75rem;
   border-radius: 0.375rem !important;
 }
+
+
+/* Стили для кнопки "Get Started" с анимацией блика */
+.get-started-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.get-started-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -75%;
+    width: 50%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: skewX(-25deg);
+    z-index: 0;
+}
+
+.get-started-btn:hover::before {
+    left: 150%;
+    transition: all 1s ease;
+}
+
+.get-started-btn span {
+    position: relative;
+    z-index: 1;
+}
+
+
+/* Валидация в allauth страничках */
+.form-control.is-invalid {
+    border-color: #dc3545;
+    padding-right: calc(1.5em + .75rem);
+    background-image: url('data:image/svg+xml;charset=utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm0 1.5a.75.75 0 0 1 .75.75v6a.75.75 0 0 1-1.5 0v-6A.75.75 0 0 1 8 1.5zM8 13.5a.75.75 0 0 1 .75-.75h-.75a.75.75 0 0 1 0 1.5h.75a.75.75 0 0 1-.75-.75z" fill="#dc3545"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right calc(.375em + .1875rem) center;
+    background-size: calc(.75em + .375rem) calc(.75em + .375rem);
+}
+.invalid-feedback {
+    display: block;
+}
+
+
+/* Стили для кнопок на страницах регистрации/авторризации */
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: #fff;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+.get-started-btn-success {
+    position: relative;
+    overflow: hidden;
+}
+
+.get-started-btn-success::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -75%;
+    width: 50%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: skewX(-25deg);
+    z-index: 0;
+}
+
+.get-started-btn-success:hover::before {
+    left: 150%;
+    transition: all 1s ease;
+}
+
+.get-started-btn-success span {
+    position: relative;
+    z-index: 1;
+}
+
