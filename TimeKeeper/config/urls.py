@@ -24,6 +24,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('events/', include('events.urls')),
+    path('users/', include('users.urls')),
     path('accounts/', include('allauth.urls')),
     path('', TemplateView.as_view(template_name='base2.html'), name='start')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
