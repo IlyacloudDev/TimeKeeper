@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block title %}{% trans "Delete Account" %}{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-4">
+    <h2 class="mt-4 text-danger">{% trans "Delete Account" %}</h2>
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body">
+                    <p class="text-danger">{% trans "Are you sure you want to delete your account? This action is irreversible!" %}</p>
+                    <p>{% trans "Once you delete your account, all your data will be permanently removed. Please confirm your decision." %}</p>
+
+                    <!-- Confirmation form -->
+                    <form id="delete-account-form" method="post" novalidate>
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="password" class="form-label">{% trans "Please enter your password to confirm:" %}</label>
+                            <input type="password" name="password" id="password" class="form-control {% if form.password.errors %}is-invalid{% endif %}" required>
+                            {% if form.password.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.password.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-danger btn-lg mt-3 get-started-btn">{% trans "Delete Account" %}</button>
+                            <a href="{% url 'account_edit' %}" class="btn btn-secondary btn-lg mt-3 get-started-btn">{% trans "Cancel" %}</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('delete-account-form');
+        form.addEventListener('submit', function(e) {
+            const confirmation = confirm("{% trans 'Are you absolutely sure you want to delete your account?' %}");
+            if (!confirmation) {
+                e.preventDefault();
+            }
+        });
+    });
+</script>
+{% endblock %}
