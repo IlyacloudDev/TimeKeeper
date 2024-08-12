@@ -1,13 +1,12 @@
 {% extends "base.html" %}
 
-{% load static %}
 {% load i18n %}
 
-{% block title %}{% trans "Profile Update" %}{% endblock %}
+{% block title %}{% trans "Account Edit" %}{% endblock %}
 
 {% block content %}
 <div class="container-fluid px-4">
-    <h2 class="mt-4">{% trans "Profile Update" %}</h2>
+    <h2 class="mt-4">{% trans "Account Edit" %}</h2>
     <div class="row">
         <div class="col-lg-8">
             <div class="card shadow-sm border-0 mb-4">
@@ -84,7 +83,7 @@
                         </div>
 
                         <div class="mt-4">
-                            <button type="submit" class="btn btn-success btn-lg mt-3 get-started-btn-success">{% trans "Update Profile" %}</button>
+                            <button type="submit" class="btn btn-success btn-lg mt-3 get-started-btn-success">{% trans "Edit account" %}</button>
                             <a href="{% url 'test' %}" class="btn btn-secondary mt-3 btn-lg get-started-btn">{% trans "Cancel" %}</a>
                         </div>
                     </form>
