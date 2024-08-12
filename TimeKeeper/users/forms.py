@@ -54,7 +54,6 @@ class CustomUserUpdateForm(forms.ModelForm):
         avatar = self.cleaned_data.get('avatar')
         image = Image.open(avatar)
         width, height = image.size
-        print(width, height)
         if width != height:
             raise forms.ValidationError("The avatar must be square (1:1 aspect ratio).")
         # Можно также добавить проверку на минимальный/максимальный размер изображения
@@ -62,3 +61,10 @@ class CustomUserUpdateForm(forms.ModelForm):
         if width > max_dimension or height > max_dimension:
             raise forms.ValidationError(f"Image size should not exceed {max_dimension}x{max_dimension} pixels.")
         return avatar
+
+
+class PasswordConfirmationForm(forms.Form):
+    password = forms.CharField(
+        label=_("Please enter your password to confirm"),
+        widget=forms.PasswordInput(attrs={'class': 'form-control'})
+    )
