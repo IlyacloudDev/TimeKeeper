@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block title %}{% trans "Create Event" %}{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-4">
+    <h2 class="mt-4">{% trans "Create Event" %}</h2>
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body">
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+
+                        <!-- Поле для ввода заголовка события -->
+                        <div class="form-floating mb-3">
+                            <input class="form-control {% if form.title.errors %}is-invalid{% endif %}"
+                                   id="id_title"
+                                   type="text"
+                                   name="title"
+                                   placeholder="{% trans 'Title' %}"
+                                   value="{{ form.title.value|default_if_none:'' }}" />
+                            <label for="id_title">{% trans "Title" %}</label>
+                            {% if form.title.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.title.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Поле для ввода контента с предпросмотром -->
+                        <div class="mb-3">
+                            <label for="id_content" class="form-label">{% trans "Content" %}</label>
+                            <textarea class="form-control {% if form.content.errors %}is-invalid{% endif %}"
+                                      id="id_content"
+                                      name="content"
+                                      rows="10"
+                                      placeholder="{% trans 'Write your event content here using Markdown' %}">{{ form.content.value|default_if_none:'' }}</textarea>
+                            {% if form.content.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.content.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Кнопка для предпросмотра -->
+                        <div class="mb-3">
+                            <button type="button" class="btn btn-primary mb-2 get-started-btn" id="preview-button">
+                                {% trans "Preview" %}
+                            </button>
+                        </div>
+
+                        <!-- Область для предпросмотра контента -->
+                        <div id="preview-area" class="p-3 border rounded" style="background-color: #f8f9fa;"></div>
+
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-success btn-lg mt-3 get-started-btn">{% trans "Create Event" %}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/tango.min.css">
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const previewButton = document.getElementById('preview-button');
+        const contentTextarea = document.getElementById('id_content');
+        const previewArea = document.getElementById('preview-area');
+
+        previewButton.addEventListener('click', function() {
+            const markdownText = contentTextarea.value;
+            const htmlContent = marked.parse(markdownText, {
+                breaks: true,
+                highlight: function(code, lang) {
+                    return hljs.highlightAuto(code).value;
+                }
+            });
+            previewArea.innerHTML = htmlContent;
+        });
+    });
+</script>
+{% endblock %}
