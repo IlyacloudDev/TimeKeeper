@@ -57,7 +57,7 @@
                         </div>
 
                         <!-- Область для предпросмотра контента -->
-                        <div id="preview-area" class="p-3 border rounded" style="background-color: #f8f9fa;"></div>
+                        <div id="preview-area" class="p-3 border rounded" ></div>
 
                         <div class="mt-4">
                             <button type="submit" class="btn btn-success btn-lg mt-3 get-started-btn">{% trans "Create Event" %}</button>
@@ -71,9 +71,11 @@
 {% endblock %}
 
 {% block extra_scripts %}
+<!-- Подключение библиотек для рендеринга Markdown и подсветки кода -->
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/tango.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/monokai.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/all.min.js"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -84,12 +86,12 @@
         previewButton.addEventListener('click', function() {
             const markdownText = contentTextarea.value;
             const htmlContent = marked.parse(markdownText, {
-                breaks: true,
-                highlight: function(code, lang) {
-                    return hljs.highlightAuto(code).value;
-                }
+                breaks: true
             });
             previewArea.innerHTML = htmlContent;
+
+            // Автоматическая подсветка всех блоков кода
+            hljs.highlightAll();
         });
     });
 </script>
