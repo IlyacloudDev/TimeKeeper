@@ -11272,11 +11272,10 @@ body {
 }
 
 
-/* Валидация в allauth страничках */
+/* Валидация в страничках */
 .form-control.is-invalid {
     border-color: #dc3545;
     padding-right: calc(1.5em + .75rem);
-    background-image: url('data:image/svg+xml;charset=utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm0 1.5a.75.75 0 0 1 .75.75v6a.75.75 0 0 1-1.5 0v-6A.75.75 0 0 1 8 1.5zM8 13.5a.75.75 0 0 1 .75-.75h-.75a.75.75 0 0 1 0 1.5h.75a.75.75 0 0 1-.75-.75z" fill="#dc3545"/></svg>');
     background-repeat: no-repeat;
     background-position: right calc(.375em + .1875rem) center;
     background-size: calc(.75em + .375rem) calc(.75em + .375rem);
