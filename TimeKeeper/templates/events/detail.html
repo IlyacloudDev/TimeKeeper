@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block title %}{% trans "Event Detail" %}{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-4">
+    <h2 class="mt-4">{{ event.title }}</h2>
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <!-- Область для отображения контента события, преобразованного из Markdown -->
+            <div id="event-content" class="markdown-content">
+                <!-- Вставляем контент напрямую, его нужно обработать в JS -->
+                <div style="display: none;">{{ event.content|safe }}</div>
+            </div>
+            <!-- Дата последнего обновления -->
+            <div class="text-muted mt-2">
+                {% trans "Last updated" %}: {{ event.updated_at|date:"F j, Y, g:i a" }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_styles %}
+<!-- Подключение стилей для Markdown -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark-reasonable.min.css">
+{% endblock %}
+
+{% block extra_scripts %}
+<!-- Подключение библиотек для рендеринга Markdown и подсветки кода -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const contentElement = document.getElementById('event-content');
+        const markdownContent = contentElement.querySelector('div').textContent;
+
+        // Преобразование Markdown в HTML с помощью marked.js
+        const htmlContent = marked.parse(markdownContent, {
+            breaks: true
+        });
+
+        // Вставка преобразованного HTML в элемент
+        contentElement.innerHTML = htmlContent;
+
+        // Автоматическая подсветка всех блоков кода после загрузки контента
+        hljs.highlightAll();
+    });
+</script>
+{% endblock %}
