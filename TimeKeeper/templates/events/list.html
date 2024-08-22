@@ -16,8 +16,9 @@
                         <small class="text-muted">{% trans "Last updated" %}: {{ event.updated_at|date:"F j, Y, g:i a" }}</small>
                     </a>
                 {% empty %}
-                    <div class="alert alert-info" role="alert">
-                        {% trans "You don't have any events yet." %}
+                    <div class="alert bg-light">
+                        {% trans "You don't have any events yet." %}<br>
+                        <a href="{% url 'event_create' %}">Go in this page to create you first event!</a>
                     </div>
                 {% endfor %}
             </div>
