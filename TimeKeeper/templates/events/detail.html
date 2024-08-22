@@ -14,8 +14,8 @@
                 <!-- Вставляем контент напрямую, его нужно обработать в JS -->
                 <div style="display: none;">{{ event.content|safe }}</div>
             </div>
-            <!-- Дата последнего обновления -->
-            <div class="text-muted mt-2">
+            <!-- Дата последнего обновления, выровненная по правому краю -->
+            <div class="text-muted mt-2 text-end">
                 {% trans "Last updated" %}: {{ event.updated_at|date:"F j, Y, g:i a" }}
             </div>
         </div>
