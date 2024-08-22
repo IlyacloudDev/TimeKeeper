@@ -31,9 +31,14 @@ class Event(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='events', verbose_name=_('User'))
 
     def save(self, *args, **kwargs):
+        # Сначала сохраняем объект, чтобы получить id
+        if not self.pk:  # Если объект новый, то сохраняем его
+            super().save(*args, **kwargs)
+
         if not self.hash_id:
-            self.hash_id = generate_hash_id(self.id)
-        super().save(*args, **kwargs)
+            self.hash_id = generate_hash_id(self.pk)  # Используем pk для генерации уникального хэша
+
+        super().save(*args, **kwargs)  # Сохраняем объект с новым hash_id
 
     class Meta:
         verbose_name = _('Event')
