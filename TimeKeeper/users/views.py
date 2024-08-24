@@ -17,7 +17,7 @@ class CustomUserUpdate(LoginRequiredMixin, UpdateView):
     form_class = CustomUserUpdateForm
     model = CustomUser
     template_name = 'users/update.html'
-    success_url = reverse_lazy('test')
+    success_url = reverse_lazy('event_list')
 
     def get_object(self, queryset=None):
         return self.request.user

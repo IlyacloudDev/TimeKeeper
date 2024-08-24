@@ -196,6 +196,6 @@ DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
 
 LOGIN_URL = 'start'
 
-LOGIN_REDIRECT_URL = 'test'
+LOGIN_REDIRECT_URL = 'event_list'
 
 LOGOUT_REDIRECT_URL = 'start'
