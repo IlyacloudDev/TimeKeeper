@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block title %}{% trans "Delete Event" %}{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-4">
+    <h2 class="mt-4 text-danger">{% trans "Delete Event" %}</h2>
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body">
+                    <p class="text-danger">{% trans "Are you sure you want to delete the event? This action is irreversible!" %}</p>
+                    <p>{% trans "Once you delete your event, all your content of this event will be permanently removed. Please confirm your decision." %}</p>
+                    <p>{% trans "Repeat the sentence: " %} <b>{{ sentence }}</b></p>
+
+                    <!-- Confirmation form -->
+                    <form id="delete-event-form" method="post" novalidate>
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="sentence" class="form-label">{% trans "Write down sentence here:" %}</label>
+                            <input type="text" name="sentence" id="sentence" class="form-control {% if form.sentence.errors %}is-invalid{% endif %}" required>
+                            {% if form.sentence.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.sentence.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-danger btn-lg mt-3 get-started-btn">{% trans "Delete Event" %}</button>
+                            <a href="{% url 'event_list' %}" class="btn btn-secondary btn-lg mt-3 get-started-btn">{% trans "Cancel" %}</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('delete-event-form');
+        form.addEventListener('submit', function(e) {
+            const confirmation = confirm("{% trans 'Are you absolutely sure you want to delete your event?' %}");
+            if (!confirmation) {
+                e.preventDefault();
+            }
+        });
+    });
+</script>
+{% endblock %}
