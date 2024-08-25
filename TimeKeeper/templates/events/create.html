@@ -2,11 +2,21 @@
 
 {% load i18n %}
 
-{% block title %}{% trans "Create Event" %}{% endblock %}
+{% block title %}
+    {% if action == 'create' %}
+        {% trans "Create Event" %}
+    {% else %}
+        {% trans "Update Event" %}
+    {% endif %}
+{% endblock %}
 
 {% block content %}
 <div class="container-fluid px-4">
-    <h2 class="mt-4">{% trans "Create Event" %}</h2>
+    {% if action == 'create' %}
+        <h2 class="mt-4">{% trans "Create Event" %}</h2>
+    {% else %}
+        <h2 class="mt-4">{% trans "Update Event" %}</h2>
+    {% endif %}
     <div class="row">
         <div class="col-lg-8">
             <div class="card shadow-sm border-0 mb-4">
@@ -58,10 +68,15 @@
 
                         <!-- Область для предпросмотра контента -->
                         <div id="preview-area" class="p-3 border rounded" ></div>
-
-                        <div class="mt-4">
-                            <button type="submit" class="btn btn-success btn-lg mt-3 get-started-btn">{% trans "Create Event" %}</button>
-                        </div>
+                        {% if action == 'create' %}
+                            <div class="mt-4">
+                                <button type="submit" class="btn btn-success btn-lg mt-3 get-started-btn">{% trans "Create Event" %}</button>
+                            </div>
+                        {% else %}
+                            <div class="mt-4">
+                                <button type="submit" class="btn btn-success btn-lg mt-3 get-started-btn">{% trans "Update Event" %}</button>
+                            </div>
+                        {% endif %}
                     </form>
                 </div>
             </div>
