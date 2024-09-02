@@ -13,7 +13,7 @@
                 <div class="card-body">
                     <p class="text-danger">{% trans "Are you sure you want to delete the event? This action is irreversible!" %}</p>
                     <p>{% trans "Once you delete your event, all your content of this event will be permanently removed. Please confirm your decision." %}</p>
-                    <p>{% trans "Repeat the sentence: " %} <b>{{ sentence }}</b></p>
+                    <p id="no-select">{% trans "Repeat the sentence: " %} <b>{{ sentence }}</b></p>
 
                     <!-- Confirmation form -->
                     <form id="delete-event-form" method="post" novalidate>
@@ -50,6 +50,20 @@
             if (!confirmation) {
                 e.preventDefault();
             }
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const noSelectElement = document.getElementById('no-select');
+
+        noSelectElement.addEventListener('mousedown', function (e) {
+            e.preventDefault();
+        });
+        noSelectElement.addEventListener('selectstart', function (e) {
+            e.preventDefault();
+        });
+        noSelectElement.addEventListener('contextmenu', function (e) {
+            e.preventDefault();
         });
     });
 </script>
