@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block title %}{% trans "Format Image - TimeKeeper" %}{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-4">
+    <div class="d-flex justify-content-between align-items-center mt-4">
+        <h2>{% trans "Format Your Image" %}</h2>
+    </div>
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="id_avatar" class="form-label">{% trans "Upload Image" %}</label>
+                    <input type="file" class="form-control {% if form.avatar.errors %}is-invalid{% endif %}" id="id_avatar" name="avatar">
+                    {% if form.avatar.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.avatar.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                <button type="submit" class="btn btn-primary get-started-btn">{% trans "Format" %}</button>
+            </form>
+
+            {% if download_url %}
+                <div class="mt-4">
+                    <h4>{% trans "Your formatted image is ready!" %}</h4>
+                    <a href="{{ download_url }}" class="btn btn-success get-started-btn" download>
+                        <i class="fas fa-download"></i> {% trans "Download Image" %}
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
