@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django import forms
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View
 from .forms import AvatarForm
 from PIL import Image
@@ -50,7 +50,7 @@ def handle_uploaded_image(image):
     return default_storage.url(filename)
 
 
-class FormattingAvatar(View):
+class FormattingAvatar(LoginRequiredMixin, View):
 
     def get(self, request):
         form = AvatarForm()
