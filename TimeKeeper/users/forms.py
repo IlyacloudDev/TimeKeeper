@@ -1,7 +1,9 @@
 from django import forms
+from django.shortcuts import reverse
 from allauth.account.forms import SignupForm
 from PIL import Image
 from .models import CustomUser
+from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 
@@ -55,7 +57,14 @@ class CustomUserUpdateForm(forms.ModelForm):
         image = Image.open(avatar)
         width, height = image.size
         if width != height:
-            raise forms.ValidationError("The avatar must be square (1:1 aspect ratio).")
+            # Получаем URL для страницы форматирования изображения
+            format_url = reverse('format_avatar')  # Убедитесь, что 'format_avatar' - правильное имя URL
+            error_message = format_html(
+                'The avatar must be square (1:1 aspect ratio). You can change the scale of the image <a href="{0}">here</a>.',
+                format_url
+            )
+            raise forms.ValidationError(error_message)
+
         # Можно также добавить проверку на минимальный/максимальный размер изображения
         max_dimension = 3000
         if width > max_dimension or height > max_dimension:
