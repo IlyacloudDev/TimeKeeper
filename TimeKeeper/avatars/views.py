@@ -13,6 +13,9 @@ max_dimension = 3000
 
 
 def handle_uploaded_image(image):
+    """
+    Function for formatting the image to the desired scale
+    """
     img = Image.open(image)
 
     # Проверка размера изображения
@@ -51,7 +54,9 @@ def handle_uploaded_image(image):
 
 
 class FormattingAvatar(LoginRequiredMixin, View):
-
+    """
+    View for processing a custom image in order to change the scale and give a link to download a new avatar
+    """
     def get(self, request):
         form = AvatarForm()
         return render(request, 'avatars/formatting.html', context={'form': form})
