@@ -46,10 +46,13 @@ INSTALLED_APPS = [
 
     'events',
     'users',
+    'avatars',
 
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+
+    "django_apscheduler",
 ]
 
 
