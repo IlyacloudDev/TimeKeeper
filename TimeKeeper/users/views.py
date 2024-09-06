@@ -1,3 +1,4 @@
+import os
 from django.contrib.auth import authenticate
 # from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -25,6 +26,9 @@ class CustomUserUpdate(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         user = form.save(commit=False)
 
+        self.object.refresh_from_db()
+        old_avatar_path = self.object.avatar.path
+
         # проверяем, пользователь изменил только пол в настройках пользователя или же ещё аватар
         if ('gender' in form.changed_data) and ('avatar' not in form.changed_data):
             # если пользователь изменил только пол, смотри, стоит ли у него дефолтная аватарка
@@ -36,6 +40,12 @@ class CustomUserUpdate(LoginRequiredMixin, UpdateView):
                 else:
                     self.request.user.avatar = 'default_avatars/female.jpg'
                     user.save()
+        elif 'avatar' in form.changed_data:
+            new_avatar = form.cleaned_data.get('avatar')
+            self.request.user.avatar = new_avatar  # Присваиваем новый аватар
+            if os.path.exists(old_avatar_path) and old_avatar_path not in ['/media/default_avatars/female.jpg', '/media/default_avatars/male.jpg']:  # Удаляем старый аватар после сохранения
+                os.remove(old_avatar_path)
+            user.save()  # Сохраняем пользователя с новым аватаром
         return super().form_valid(form)
 
 
