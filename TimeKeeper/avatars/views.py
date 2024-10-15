@@ -18,10 +18,13 @@ def handle_uploaded_image(image):
     """
     img = Image.open(image)
 
+    if img.mode == 'RGBA':
+        raise ValueError("The image has an alpha channel transparency, select another image.")
+
     # Проверка размера изображения
     width, height = img.size
     if width > max_dimension or height > max_dimension:
-        raise ValueError(f"Размер изображения не должен превышать {max_dimension}x{max_dimension} пикселей.")
+        raise ValueError(f"The image size should not exceed {max_dimension}x{max_dimension} pixels.")
 
     # Преобразование изображения в квадрат (масштаб 1:1)
     min_side = min(width, height)
